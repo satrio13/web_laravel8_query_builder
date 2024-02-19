@@ -1,0 +1,163 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Admin\PengumumanModel;
+
+class PengumumanController extends Controller
+{
+    function __construct()
+    {
+        $this->pengumuman_model = new PengumumanModel();
+        date_default_timezone_set('Asia/Jakarta');
+    }
+
+    function index()
+    {     
+        $data['title'] = 'Pengumuman';
+        $data['data'] = $this->pengumuman_model->list_pengumuman();
+        return view('admin.pengumuman.index', $data);
+    }
+
+    function tambah_pengumuman()
+    {     
+        $data['title'] = 'Tambah Pengumuman';
+        return view('admin.pengumuman.form_tambah', $data);
+    }
+
+    function simpan_pengumuman(Request $request)
+    {   
+        $request->validate([
+            'nama' => 'required|max:100',
+            'isi' => 'required',
+            'is_active' => 'required',
+            'gambar' => 'image|mimes:jpeg,jpg,png|max:1024'
+        ]);
+            
+        $nama_gambar = '';
+        $gambar = $request->file('gambar');
+        if($gambar != '')
+        {
+            $nama_gambar = time().'_'.$gambar->hashName();
+            $gambar->move(public_path('img/pengumuman'), $nama_gambar);
+        }
+        
+        $data = [
+            'nama' => $request->input('nama'),
+            'isi' => $request->input('isi'),
+            'gambar' => $nama_gambar,
+            'dibaca' => 0,
+            'id_user' => session('id_user'),
+            'is_active' => $request->input('is_active'),
+            'hari' => hari_ini_indo(),
+            'tgl' => tgl_jam_simpan_sekarang(),
+            'slug' => slug($request->input('nama')),
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ];
+
+        $q = $this->pengumuman_model->simpan_pengumuman($data);
+        if($q)
+        {
+            return redirect()->route('backend/pengumuman')->with(['success' => 'Data Berhasil Disimpan!']);
+        }else
+        {
+            return redirect()->back()->withInput()->with(['error' => 'Data Gagal Disimpan!']);
+        }
+    }
+
+    function edit_pengumuman($id)
+    {
+        $cek = $this->pengumuman_model->cek_pengumuman($id);
+        if($cek)
+        {   
+            $data['title'] = 'Edit Pengumuman';
+            $data['data'] = $this->pengumuman_model->get_pengumuman($id);
+            return view('admin.pengumuman.form_edit', $data);
+        }else
+        {
+            abort(404);
+        }
+    }
+
+    function update_pengumuman(Request $request, $id)
+    {   
+        $request->validate([
+            'nama' => 'required|max:100',
+            'isi' => 'required',
+            'is_active' => 'required',
+            'gambar' => 'image|mimes:jpeg,jpg,png|max:1024'
+        ]);
+            
+        $get = $this->pengumuman_model->cek_pengumuman($id);
+        $nama_gambar = '';
+        $gambar = $request->file('gambar');
+        if($gambar != '')
+        {
+            if($get->gambar == '' OR $get->gambar == null)
+            {        
+                $nama_gambar = time().'_'.$gambar->hashName();
+                $gambar->move(public_path('img/pengumuman'), $nama_gambar);
+            }elseif($get->gambar != '' AND $get->gambar != null)
+            {
+                $nama_gambar = time().'_'.$gambar->hashName();
+                $gambar->move(public_path('img/pengumuman'), $nama_gambar);
+                unlink("img/pengumuman/$get->gambar");
+            }else
+            {
+                $nama_gambar = '';
+            }
+        }else
+        {
+            $nama_gambar = $get->gambar;
+        }
+        
+        $data = [
+            'nama' => $request->input('nama'),
+            'isi' => $request->input('isi'),
+            'gambar' => $nama_gambar,
+            'id_user' => session('id_user'),
+            'is_active' => $request->input('is_active'),
+            'hari' => hari_ini_indo(),
+            'tgl' => tgl_jam_simpan_sekarang(),
+            'slug' => slug($request->input('nama')),
+            'updated_at' => date('Y-m-d H:i:s')
+        ];
+
+        $q = $this->pengumuman_model->update_pengumuman($data, $id);
+        if($q)
+        {
+            return redirect()->route('backend/pengumuman')->with(['success' => 'Data Berhasil Diupdate!']);
+        }else
+        {
+            return redirect()->back()->withInput()->with(['error' => 'Data Gagal Diupdate!']);
+        }
+    }
+
+    function hapus_pengumuman($id)
+    {
+        $cek = $this->pengumuman_model->cek_pengumuman($id);
+        if($cek)
+        {   
+            if($cek->gambar != '' AND file_exists("img/pengumuman/$cek->gambar"))
+            {
+                unlink("img/pengumuman/$cek->gambar");
+            }
+
+            $q = $this->pengumuman_model->hapus_pengumuman($id);
+            if($q)
+            {
+                return redirect()->route('backend/pengumuman')->with(['success' => 'Data Berhasil Dihapus!']);
+            }else
+            {
+                return redirect()->route('backend/pengumuman')->with(['errors' => 'Data Gagal Dihapus!']);
+            }
+        }else
+        {
+            abort(404);
+        }
+    }  
+
+}
