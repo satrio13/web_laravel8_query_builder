@@ -16,12 +16,15 @@ class CreateTableRekapUn extends Migration
     {
         Schema::create('tb_rekap_un', function (Blueprint $table) {
             $table->increments('id_un');
-            $table->integer('id_kurikulum');
+            $table->unsignedInteger('id_kurikulum');
             $table->integer('tertinggi');
             $table->integer('terendah');
             $table->integer('rata');
-            $table->integer('id_tahun');
+            $table->unsignedInteger('id_tahun');
             $table->timestamps();
+
+            $table->foreign('id_kurikulum')->references('id_kurikulum')->on('tb_kurikulum')->onDelete('no action');
+            $table->foreign('id_tahun')->references('id_tahun')->on('tb_tahun')->onDelete('no action');
         });
     }
 

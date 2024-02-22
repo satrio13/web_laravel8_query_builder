@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\KalenderModel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class KalenderController extends Controller
 {
@@ -32,19 +33,9 @@ class KalenderController extends Controller
         $gambar = $request->file('file');
         if($gambar != '')
         {
-            if($get->kalender == '' OR $get->kalender == null)
-            {        
-                $nama_gambar = time().'_'.$gambar->getClientOriginalName();
-                $gambar->move(public_path('img/kalender'), $nama_gambar);
-            }elseif($get->kalender != '' AND $get->kalender != null)
-            {
-                $nama_gambar = time().'_'.$gambar->getClientOriginalName();
-                $gambar->move(public_path('img/kalender'), $nama_gambar);
-                unlink("img/kalender/$get->kalender");
-            }else
-            {
-                $nama_gambar = '';
-            }
+            $nama_gambar = time().'_'.$gambar->getClientOriginalName();
+            $gambar->move(public_path('img/kalender'), $nama_gambar);
+            File::delete("img/kalender/$get->kalender");
         }else
         {
             $nama_gambar = $get->kalender;

@@ -153,7 +153,7 @@
             $('#nama, #status, #pengaduan').html('');           
 
             $.ajax({
-                url : base_url + "lihat-pengaduan/"+id,
+                url : base_url + "/backend/lihat-pengaduan/"+id,
                 type: "GET",
                 dataType: "JSON",
                 beforeSend: function()
@@ -184,7 +184,7 @@
                 },
                 error: function (request)
                 {
-                    alert_gagal('An error occurred during your request: '+  request.status + ' ' + request.statusText + 'Please Try Again!!');
+                    alert('An error occurred during your request: '+  request.status + ' ' + request.statusText + 'Please Try Again!!');
                 }
             });
         }

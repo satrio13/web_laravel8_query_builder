@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\VideoModel;
+use Illuminate\Http\Request;
 
 class VideoController extends Controller
 {

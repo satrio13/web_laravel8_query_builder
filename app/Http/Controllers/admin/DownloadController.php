@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\DownloadModel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class DownloadController extends Controller
 {
@@ -90,19 +91,9 @@ class DownloadController extends Controller
         $file = $request->file('file');
         if($file != '')
         {
-            if($get->file == '' OR $get->file == null)
-            {        
-                $nama_file = time().'_'.$file->getClientOriginalName();
-                $file->move(public_path('file'), $nama_file);
-            }elseif($get->file != '' AND $get->file != null)
-            {
-                $nama_file = time().'_'.$file->getClientOriginalName();
-                $file->move(public_path('file'), $nama_file);
-                unlink("file/$get->file");
-            }else
-            {
-                $nama_file = '';
-            }
+            $nama_file = time().'_'.$file->getClientOriginalName();
+            $file->move(public_path('file'), $nama_file);
+            File::delete("file/$get->file");
         }else
         {
             $nama_file = $get->file;
@@ -131,18 +122,14 @@ class DownloadController extends Controller
         $cek = $this->download_model->cek_download($id);
         if($cek)
         {   
-            if($cek->file != '' AND file_exists("file/$cek->file"))
-            {
-                unlink("file/$cek->file");
-            }
-
+            File::delete("file/$cek->file");
             $q = $this->download_model->hapus_download($id);
             if($q)
             {
                 return redirect()->route('backend/download')->with(['success' => 'Data Berhasil Dihapus!']);
             }else
             {
-                return redirect()->route('backend/download')->with(['errors' => 'Data Gagal Dihapus!']);
+                return redirect()->route('backend/download')->with(['error' => 'Data Gagal Dihapus!']);
             }
         }else
         {

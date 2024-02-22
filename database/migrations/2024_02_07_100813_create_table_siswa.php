@@ -16,7 +16,7 @@ class CreateTableSiswa extends Migration
     {
         Schema::create('tb_siswa', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_tahun');
+            $table->unsignedInteger('id_tahun');
             $table->integer('jml1pa');
             $table->integer('jml1pi');
             $table->integer('jml2pa');
@@ -24,6 +24,8 @@ class CreateTableSiswa extends Migration
             $table->integer('jml3pa');
             $table->integer('jml3pi');
             $table->timestamps();
+
+            $table->foreign('id_tahun')->references('id_tahun')->on('tb_tahun')->onDelete('no action');
         });
     }
 

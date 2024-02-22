@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\PrestasiGuruModel;
 use App\Models\Admin\TahunModel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class PrestasiGuruController extends Controller
 {
@@ -74,7 +75,7 @@ class PrestasiGuruController extends Controller
         }
     }
 
-    public function edit_prestasi_guru($id)
+    function edit_prestasi_guru($id)
     {   
         $cek = $this->prestasi_guru_model->cek_prestasi_guru($id);
         if($cek)
@@ -107,19 +108,9 @@ class PrestasiGuruController extends Controller
         $gambar = $request->file('gambar');
         if($gambar != '')
         {
-            if($get->gambar == '' OR $get->gambar == null)
-            {        
-                $nama_gambar = time().'_'.$gambar->hashName();
-                $gambar->move(public_path('img/prestasi_guru'), $nama_gambar);
-            }elseif($get->gambar != '' AND $get->gambar != null)
-            {
-                $nama_gambar = time().'_'.$gambar->hashName();
-                $gambar->move(public_path('img/prestasi_guru'), $nama_gambar);
-                unlink("img/prestasi_guru/$get->gambar");
-            }else
-            {
-                $nama_gambar = '';
-            }
+            $nama_gambar = time().'_'.$gambar->hashName();
+            $gambar->move(public_path('img/prestasi_guru'), $nama_gambar);
+            File::delete("img/prestasi_guru/$get->gambar");
         }else
         {
             $nama_gambar = $get->gambar;
@@ -147,23 +138,19 @@ class PrestasiGuruController extends Controller
         }
     }
 
-    public function hapus_prestasi_guru($id)
+    function hapus_prestasi_guru($id)
     {   
         $cek = $this->prestasi_guru_model->cek_prestasi_guru($id);
         if($cek)
         {
-            if($cek->gambar != '' AND file_exists("img/prestasi_guru/$cek->gambar"))
-            {
-                unlink("img/prestasi_guru/$cek->gambar");
-            }
-
+            File::delete("img/prestasi_guru/$cek->gambar");
             $q = $this->prestasi_guru_model->hapus_prestasi_guru($id);
             if($q)
             {
                 return redirect()->route('backend/prestasi-guru')->with(['success' => 'Data Berhasil Dihapus!']);
             }else
             {
-                return redirect()->route('backend/prestasi-guru')->with(['errors' => 'Data Gagal Dihapus!']);
+                return redirect()->route('backend/prestasi-guru')->with(['error' => 'Data Gagal Dihapus!']);
             }
         }else
         {

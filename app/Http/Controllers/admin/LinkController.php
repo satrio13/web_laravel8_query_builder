@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\LinkModel;
+use Illuminate\Http\Request;
 
 class LinkController extends Controller
 {
@@ -103,7 +103,7 @@ class LinkController extends Controller
                 return redirect()->route('backend/link')->with(['success' => 'Data Berhasil Dihapus!']);
             }else
             {
-                return redirect()->route('backend/link')->with(['errors' => 'Data Gagal Dihapus!']);
+                return redirect()->route('backend/link')->with(['error' => 'Data Gagal Dihapus!']);
             }
         }else
         {

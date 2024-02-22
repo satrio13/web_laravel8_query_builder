@@ -19,9 +19,11 @@ class CreateTableDownload extends Migration
             $table->string('nama_file', 100);
             $table->string('file', 100);
             $table->integer('hits');
-            $table->integer('id_user');
+            $table->unsignedInteger('id_user');
             $table->string('is_active', 1);
             $table->timestamps();
+
+            $table->foreign('id_user')->references('id_user')->on('tb_user')->onDelete('no action');
         });
     }
 

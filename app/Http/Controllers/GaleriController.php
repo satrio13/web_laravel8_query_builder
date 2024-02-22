@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\AlbumModel;
 use App\Models\VideoModel;
+use Illuminate\Http\Request;
 
 class GaleriController extends Controller
 {

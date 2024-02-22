@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\AuthModel;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -17,7 +17,7 @@ class AuthController extends Controller
     {
         if(session('id_user'))
         {
-            return redirect()->route('backend/link');  
+            return redirect()->route('backend');  
         }
 
         return view('admin.auth.login');
@@ -44,7 +44,7 @@ class AuthController extends Controller
                     ];
 
                     session($params);
-                    return redirect()->route('backend/link');  
+                    return redirect()->route('backend');  
                 }else
                 {
                     return redirect()->back()->withInput()->with('error', 'Password Salah!');  

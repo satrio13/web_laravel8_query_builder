@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\UserModel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -132,14 +132,23 @@ class UserController extends Controller
     {   
         $cek = $this->user_model->cek_user($id);
         if($cek)
-        {
-            $q = $this->user_model->hapus_user($id);
-            if($q)
+        {   
+            $cek_pengumuman = $this->user_model->cek_user_pengumuman($id);
+            $cek_berita = $this->user_model->cek_user_berita($id);
+            $cek_download = $this->user_model->cek_user_download($id);
+            if($cek_pengumuman OR $cek_berita OR $cek_download)
             {
-                return redirect()->route('backend/users')->with(['success' => 'Data Berhasil Dihapus!']);
+                return redirect()->route('backend/users')->with(['error' => 'Data gagal dihapus, karena sudah berelasi!']);
             }else
             {
-                return redirect()->route('backend/users')->with(['error' => 'Data Berhasil Dihapus!']);
+                $q = $this->user_model->hapus_user($id);
+                if($q)
+                {
+                    return redirect()->route('backend/users')->with(['success' => 'Data Berhasil Dihapus!']);
+                }else
+                {
+                    return redirect()->route('backend/users')->with(['error' => 'Data Berhasil Dihapus!']);
+                }
             }       
         }else
         {

@@ -43,4 +43,14 @@ class KurikulumModel
         return DB::table($this->table)->where('id_kurikulum', $id)->delete();
     }
 
+    function cek_kurikulum_rekap_un($id)
+    {
+        return DB::table('tb_rekap_un')->select('id_kurikulum')->where('id_kurikulum', $id)->first();
+    }
+
+    function cek_kurikulum_rekap_us($id)
+    {
+        return DB::table('tb_rekap_us')->select('id_kurikulum')->where('id_kurikulum', $id)->first();
+    }
+
 }

@@ -10,7 +10,7 @@ class ProfilModel
 
     function get_profil($select = '*')
     {
-        return DB::table($this->table)->select($select)->find(1);
+        return DB::table($this->table)->select($select)->where('id', 1)->first();
     }
 
     function update_profil($data)

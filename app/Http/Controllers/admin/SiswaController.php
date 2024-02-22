@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\SiswaModel;
 use App\Models\Admin\TahunModel;
+use Illuminate\Http\Request;
 
 class SiswaController extends Controller
 {
@@ -101,7 +101,6 @@ class SiswaController extends Controller
             'jml2pi' => $request->input('jml2pi'),
             'jml3pa' => $request->input('jml3pa'),
             'jml3pi' => $request->input('jml3pi'),
-            'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ];
 

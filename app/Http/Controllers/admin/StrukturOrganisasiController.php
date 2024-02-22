@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\StrukturOrganisasiModel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class StrukturOrganisasiController extends Controller
 {
@@ -39,19 +40,9 @@ class StrukturOrganisasiController extends Controller
         $gambar = $request->file('struktur');
         if($gambar != '')
         {
-            if($get->isi == '' OR $get->isi == null)
-            {        
-                $nama_gambar = time().'_'.$gambar->hashName();
-                $gambar->move(public_path('img/struktur'), $nama_gambar);
-            }elseif($get->isi != '' AND $get->isi != null)
-            {
-                $nama_gambar = time().'_'.$gambar->hashName();
-                $gambar->move(public_path('img/struktur'), $nama_gambar);
-                unlink("img/struktur/$get->isi");
-            }else
-            {
-                $nama_gambar = '';
-            }
+            $nama_gambar = time().'_'.$gambar->hashName();
+            $gambar->move(public_path('img/struktur'), $nama_gambar);
+            File::delete("img/struktur/$get->isi");   
         }else
         {
             $nama_gambar = $get->isi;

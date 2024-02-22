@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\AlumniModel;
 use App\Models\Admin\TahunModel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class AlumniController extends Controller
 {
@@ -107,7 +108,7 @@ class AlumniController extends Controller
                 return redirect()->route('backend/alumni')->with(['success' => 'Data Berhasil Dihapus!']);
             }else
             {
-                return redirect()->route('backend/alumni')->with(['errors' => 'Data Gagal Dihapus!']);
+                return redirect()->route('backend/alumni')->with(['error' => 'Data Gagal Dihapus!']);
             }
         }else
         {
@@ -151,18 +152,14 @@ class AlumniController extends Controller
         $cek = $this->alumni_model->cek_isialumni($id);
         if($cek)
         {   
-            if($cek->gambar != '' AND file_exists("img/alumni/$cek->gambar"))
-            {
-                unlink("img/alumni/$cek->gambar");
-            }
-
+            File::delete("img/alumni/$cek->gambar");
             $q = $this->alumni_model->hapus_isialumni($id);
             if($q)
             {
                 return redirect()->route('backend/penelusuran-alumni')->with(['success' => 'Data Berhasil Dihapus!']);
             }else
             {
-                return redirect()->route('backend/penelusuran-alumni')->with(['errors' => 'Data Gagal Dihapus!']);
+                return redirect()->route('backend/penelusuran-alumni')->with(['error' => 'Data Gagal Dihapus!']);
             }
         }else
         {

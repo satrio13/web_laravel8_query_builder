@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\BannerModel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class BannerController extends Controller
 {
@@ -87,19 +88,9 @@ class BannerController extends Controller
         $gambar = $request->file('gambar');
         if($gambar != '')
         {
-            if($get->gambar == '' OR $get->gambar == null)
-            {        
-                $nama_gambar = time().'_'.$gambar->hashName();
-                $gambar->move(public_path('img/banner'), $nama_gambar);
-            }elseif($get->gambar != '' AND $get->gambar != null)
-            {
-                $nama_gambar = time().'_'.$gambar->hashName();
-                $gambar->move(public_path('img/banner'), $nama_gambar);
-                unlink("img/banner/$get->gambar");
-            }else
-            {
-                $nama_gambar = '';
-            }
+            $nama_gambar = time().'_'.$gambar->hashName();
+            $gambar->move(public_path('img/banner'), $nama_gambar);
+            File::delete("img/banner/$get->gambar");
         }else
         {
             $nama_gambar = $get->gambar;
@@ -130,18 +121,14 @@ class BannerController extends Controller
         $cek = $this->banner_model->cek_banner($id);
         if($cek)
         {   
-            if($cek->gambar != '' AND file_exists("img/banner/$cek->gambar"))
-            {
-                unlink("img/banner/$cek->gambar");
-            }
-
+            File::delete("img/banner/$cek->gambar");
             $q = $this->banner_model->hapus_banner($id);
             if($q)
             {
                 return redirect()->route('backend/banner')->with(['success' => 'Data Berhasil Dihapus!']);
             }else
             {
-                return redirect()->route('backend/banner')->with(['errors' => 'Data Gagal Dihapus!']);
+                return redirect()->route('backend/banner')->with(['error' => 'Data Gagal Dihapus!']);
             }
         }else
         {

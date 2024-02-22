@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\RekapUNModel;
 use App\Models\Admin\TahunModel;
 use App\Models\Admin\KurikulumModel;
+use Illuminate\Http\Request;
 
 class RekapUNController extends Controller
 {

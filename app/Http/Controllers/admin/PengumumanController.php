@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\PengumumanModel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 
 class PengumumanController extends Controller
 {
@@ -53,7 +55,7 @@ class PengumumanController extends Controller
             'is_active' => $request->input('is_active'),
             'hari' => hari_ini_indo(),
             'tgl' => tgl_jam_simpan_sekarang(),
-            'slug' => slug($request->input('nama')),
+            'slug' => Str::slug($request->input('nama'), '-'),
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ];
@@ -96,19 +98,9 @@ class PengumumanController extends Controller
         $gambar = $request->file('gambar');
         if($gambar != '')
         {
-            if($get->gambar == '' OR $get->gambar == null)
-            {        
-                $nama_gambar = time().'_'.$gambar->hashName();
-                $gambar->move(public_path('img/pengumuman'), $nama_gambar);
-            }elseif($get->gambar != '' AND $get->gambar != null)
-            {
-                $nama_gambar = time().'_'.$gambar->hashName();
-                $gambar->move(public_path('img/pengumuman'), $nama_gambar);
-                unlink("img/pengumuman/$get->gambar");
-            }else
-            {
-                $nama_gambar = '';
-            }
+            $nama_gambar = time().'_'.$gambar->hashName();
+            $gambar->move(public_path('img/pengumuman'), $nama_gambar);
+            File::delete("img/pengumuman/$get->gambar");
         }else
         {
             $nama_gambar = $get->gambar;
@@ -122,7 +114,7 @@ class PengumumanController extends Controller
             'is_active' => $request->input('is_active'),
             'hari' => hari_ini_indo(),
             'tgl' => tgl_jam_simpan_sekarang(),
-            'slug' => slug($request->input('nama')),
+            'slug' => Str::slug($request->input('nama'), '-'),
             'updated_at' => date('Y-m-d H:i:s')
         ];
 
@@ -141,18 +133,14 @@ class PengumumanController extends Controller
         $cek = $this->pengumuman_model->cek_pengumuman($id);
         if($cek)
         {   
-            if($cek->gambar != '' AND file_exists("img/pengumuman/$cek->gambar"))
-            {
-                unlink("img/pengumuman/$cek->gambar");
-            }
-
+            File::delete("img/pengumuman/$cek->gambar");
             $q = $this->pengumuman_model->hapus_pengumuman($id);
             if($q)
             {
                 return redirect()->route('backend/pengumuman')->with(['success' => 'Data Berhasil Dihapus!']);
             }else
             {
-                return redirect()->route('backend/pengumuman')->with(['errors' => 'Data Gagal Dihapus!']);
+                return redirect()->route('backend/pengumuman')->with(['error' => 'Data Gagal Dihapus!']);
             }
         }else
         {

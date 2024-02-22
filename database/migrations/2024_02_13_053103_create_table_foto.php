@@ -16,9 +16,11 @@ class CreateTableFoto extends Migration
     {
         Schema::create('tb_foto', function (Blueprint $table) {
             $table->increments('id_foto');
-            $table->integer('id_album');
+            $table->unsignedInteger('id_album');
             $table->string('foto', 250);
             $table->timestamps();
+
+            $table->foreign('id_album')->references('id_album')->on('tb_album')->onDelete('no action');
         });
     }
 

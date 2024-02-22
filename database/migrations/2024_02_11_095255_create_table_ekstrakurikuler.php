@@ -17,7 +17,7 @@ class CreateTableEkstrakurikuler extends Migration
             $table->increments('id');
             $table->string('nama_ekstrakurikuler', 100);
             $table->string('gambar', 250);
-            $table->text('keterangan');
+            $table->text('keterangan')->nullable();
             $table->string('slug', 120);
             $table->timestamps();
         });

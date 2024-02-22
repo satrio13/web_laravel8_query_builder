@@ -10,7 +10,7 @@ class SarprasModel
 
     function get_sarpras()
     {
-        return DB::table($this->table)->find(1);
+        return DB::table($this->table)->where('id', 1)->first();
     }
 
     function update_sarpras($data)

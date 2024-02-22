@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\KaryawanModel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class KaryawanController extends Controller
 {
@@ -118,19 +119,9 @@ class KaryawanController extends Controller
         $gambar = $request->file('gambar');
         if($gambar != '')
         {
-            if($get->gambar == '' OR $get->gambar == null)
-            {        
-                $nama_gambar = time().'_'.$gambar->hashName();
-                $gambar->move(public_path('img/karyawan'), $nama_gambar);
-            }elseif($get->gambar != '' AND $get->gambar != null)
-            {
-                $nama_gambar = time().'_'.$gambar->hashName();
-                $gambar->move(public_path('img/karyawan'), $nama_gambar);
-                unlink("img/karyawan/$get->gambar");
-            }else
-            {
-                $nama_gambar = '';
-            }
+            $nama_gambar = time().'_'.$gambar->hashName();
+            $gambar->move(public_path('img/karyawan'), $nama_gambar);
+            File::delete("img/karyawan/$get->gambar");
         }else
         {
             $nama_gambar = $get->gambar;
@@ -178,18 +169,14 @@ class KaryawanController extends Controller
         $cek = $this->karyawan_model->cek_karyawan($id);
         if($cek)
         {   
-            if($cek->gambar != '' AND file_exists("img/karyawan/$cek->gambar"))
-            {
-                unlink("img/karyawan/$cek->gambar");
-            }
-
+            File::delete("img/karyawan/$cek->gambar");
             $q = $this->karyawan_model->hapus_karyawan($id);
             if($q)
             {
                 return redirect()->route('backend/karyawan')->with(['success' => 'Data Berhasil Dihapus!']);
             }else
             {
-                return redirect()->route('backend/karyawan')->with(['errors' => 'Data Gagal Dihapus!']);
+                return redirect()->route('backend/karyawan')->with(['error' => 'Data Gagal Dihapus!']);
             }
         }else
         {

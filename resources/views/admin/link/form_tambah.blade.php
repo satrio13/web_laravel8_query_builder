@@ -34,7 +34,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">NAMA HALAMAN <span class="text-danger">*</span></label>
                                     <div class="col-sm-5">
-                                        <input type="text" name="nama" maxlength="100" value="{{ old('nama') }}" class="form-control" placeholder="NAMA HALAMAN" >
+                                        <input type="text" name="nama" maxlength="100" value="{{ old('nama') }}" class="form-control" placeholder="NAMA HALAMAN" required>
                                         <small class="text-danger">
                                             {{ ($errors->first('nama')) ? $errors->first('nama') : '' }} 
                                         </small>

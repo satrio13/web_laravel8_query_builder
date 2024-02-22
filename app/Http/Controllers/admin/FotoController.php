@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\FotoModel;
 use App\Models\Admin\AlbumModel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class FotoController extends Controller
 {
@@ -67,18 +68,14 @@ class FotoController extends Controller
         $cek = $this->foto_model->get_foto($id);
         if($cek)
         {   
-            if($cek->foto != '' AND file_exists("img/foto/$cek->foto"))
-            {
-                unlink("img/foto/$cek->foto");
-            }
-
+            File::delete("img/foto/$cek->foto");
             $q = $this->foto_model->hapus_foto($id);
             if($q)
             {
                 return redirect()->route('backend/foto')->with(['success' => 'Data Berhasil Dihapus!']);
             }else
             {
-                return redirect()->route('backend/foto')->with(['errors' => 'Data Gagal Dihapus!']);
+                return redirect()->route('backend/foto')->with(['error' => 'Data Gagal Dihapus!']);
             }
         }else
         {

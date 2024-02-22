@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\PengaduanModel;
+use Illuminate\Http\Request;
 
 class PengaduanController extends Controller
 {
@@ -45,7 +45,7 @@ class PengaduanController extends Controller
                 return redirect()->route('backend/pengaduan')->with(['success' => 'Data Berhasil Dihapus!']);
             }else
             {
-                return redirect()->route('backend/pengaduan')->with(['errors' => 'Data Gagal Dihapus!']);
+                return redirect()->route('backend/pengaduan')->with(['error' => 'Data Gagal Dihapus!']);
             }
         }else
         {

@@ -42,5 +42,10 @@ class AlbumModel
     {
         return DB::table($this->table)->where('id_album', $id)->delete();
     }
+    
+    function cek_album_foto($id)
+    {
+        return DB::table('tb_foto')->select('id_album')->where('id_album', $id)->first();
+    }
 
 }

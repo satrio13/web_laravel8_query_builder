@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\BeritaModel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 
 class BeritaController extends Controller
 {
@@ -53,7 +55,7 @@ class BeritaController extends Controller
             'is_active' => $request->input('is_active'),
             'hari' => hari_ini_indo(),
             'tgl' => tgl_jam_simpan_sekarang(),
-            'slug' => slug($request->input('nama')),
+            'slug' => Str::slug($request->input('nama'), '-'),
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ];
@@ -96,19 +98,9 @@ class BeritaController extends Controller
         $gambar = $request->file('gambar');
         if($gambar != '')
         {
-            if($get->gambar == '' OR $get->gambar == null)
-            {        
-                $nama_gambar = time().'_'.$gambar->hashName();
-                $gambar->move(public_path('img/berita'), $nama_gambar);
-            }elseif($get->gambar != '' AND $get->gambar != null)
-            {
-                $nama_gambar = time().'_'.$gambar->hashName();
-                $gambar->move(public_path('img/berita'), $nama_gambar);
-                unlink("img/berita/$get->gambar");
-            }else
-            {
-                $nama_gambar = '';
-            }
+            $nama_gambar = time().'_'.$gambar->hashName();
+            $gambar->move(public_path('img/berita'), $nama_gambar);
+            File::delete("img/berita/$get->gambar");
         }else
         {
             $nama_gambar = $get->gambar;
@@ -122,7 +114,7 @@ class BeritaController extends Controller
             'is_active' => $request->input('is_active'),
             'hari' => hari_ini_indo(),
             'tgl' => tgl_jam_simpan_sekarang(),
-            'slug' => slug($request->input('nama')),
+            'slug' => Str::slug($request->input('nama'), '-'),
             'updated_at' => date('Y-m-d H:i:s')
         ];
 
@@ -141,18 +133,14 @@ class BeritaController extends Controller
         $cek = $this->berita_model->cek_berita($id);
         if($cek)
         {   
-            if($cek->gambar != '' AND file_exists("img/berita/$cek->gambar"))
-            {
-                unlink("img/berita/$cek->gambar");
-            }
-
+            File::delete("img/berita/$cek->gambar");
             $q = $this->berita_model->hapus_berita($id);
             if($q)
             {
                 return redirect()->route('backend/berita')->with(['success' => 'Data Berhasil Dihapus!']);
             }else
             {
-                return redirect()->route('backend/berita')->with(['errors' => 'Data Gagal Dihapus!']);
+                return redirect()->route('backend/berita')->with(['error' => 'Data Gagal Dihapus!']);
             }
         }else
         {

@@ -10,7 +10,7 @@ class VisiMisiModel
 
     function get_visi_misi()
     {
-        return DB::table($this->table)->find(1);
+        return DB::table($this->table)->where('id', 1)->first();
     }
 
     function update_visi_misi($data)

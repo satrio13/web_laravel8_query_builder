@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\ProfilModel;
 use App\Models\HomeModel;
+use Illuminate\Http\Request;
 
 class ProfilController extends Controller
 {

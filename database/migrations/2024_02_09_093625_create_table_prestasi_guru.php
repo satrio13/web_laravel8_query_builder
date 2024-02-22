@@ -16,7 +16,7 @@ class CreateTablePrestasiGuru extends Migration
     {
         Schema::create('tb_prestasi_guru', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_tahun');
+            $table->unsignedInteger('id_tahun');
             $table->string('nama', 100);
             $table->string('prestasi', 100);
             $table->string('nama_guru', 100);
@@ -25,6 +25,8 @@ class CreateTablePrestasiGuru extends Migration
             $table->string('keterangan', 100)->nullable();
             $table->string('gambar', 250)->nullable();
             $table->timestamps();
+
+            $table->foreign('id_tahun')->references('id_tahun')->on('tb_tahun')->onDelete('no action');
         });
     }
 

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\KurikulumModel;
+use Illuminate\Http\Request;
 
 class KurikulumController extends Controller
 {
@@ -104,14 +104,22 @@ class KurikulumController extends Controller
     {   
         $cek = $this->kurikulum_model->cek_kurikulum($id);
         if($cek)
-        {
-            $q = $this->kurikulum_model->hapus_kurikulum($id);
-            if($q)
+        {   
+            $cek_un = $this->kurikulum_model->cek_kurikulum_rekap_un($id);
+            $cek_us = $this->kurikulum_model->cek_kurikulum_rekap_us($id);
+            if($cek_un OR $cek_us)
             {
-                return redirect()->route('backend/kurikulum')->with(['success' => 'Data Berhasil Dihapus!']);
+                return redirect()->route('backend/kurikulum')->with(['error' => 'Data gagal dihapus, karena sudah berelasi!']);
             }else
             {
-                return redirect()->route('backend/kurikulum')->with(['errors' => 'Data Gagal Dihapus!']);
+                $q = $this->kurikulum_model->hapus_kurikulum($id);
+                if($q)
+                {
+                    return redirect()->route('backend/kurikulum')->with(['success' => 'Data Berhasil Dihapus!']);
+                }else
+                {
+                    return redirect()->route('backend/kurikulum')->with(['error' => 'Data Gagal Dihapus!']);
+                }
             }
         }else
         {

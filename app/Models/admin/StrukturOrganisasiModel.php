@@ -10,7 +10,7 @@ class StrukturOrganisasiModel
 
     function get_struktur_organisasi()
     {
-        return DB::table($this->table)->find(1);
+        return DB::table($this->table)->where('id', 1)->first();
     }
 
     function update_struktur_organisasi($data)

@@ -10,7 +10,7 @@ class SejarahModel
 
     function get_sejarah()
     {
-        return DB::table($this->table)->find(1);
+        return DB::table($this->table)->where('id', 1)->first();
     }
 
     function update_sejarah($data)

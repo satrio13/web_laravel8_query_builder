@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\TahunModel;
+use Illuminate\Http\Request;
 
 class TahunController extends Controller
 {
@@ -88,14 +88,27 @@ class TahunController extends Controller
     {
         $cek = $this->tahun_model->cek_tahun($id);
         if($cek)
-        {
-            $q = $this->tahun_model->hapus_tahun($id);
-            if($q)
+        {   
+            $cek_un = $this->tahun_model->cek_tahun_rekap_un($id);
+            $cek_us = $this->tahun_model->cek_tahun_rekap_us($id);
+            $cek_s = $this->tahun_model->cek_tahun_siswa($id);
+            $cek_p_siswa = $this->tahun_model->cek_tahun_prestasi_siswa($id);
+            $cek_p_guru = $this->tahun_model->cek_tahun_prestasi_guru($id);
+            $cek_p_sekolah = $this->tahun_model->cek_tahun_prestasi_sekolah($id);
+            $cek_a = $this->tahun_model->cek_tahun_alumni($id);
+            if($cek_un OR $cek_us OR $cek_s OR $cek_p_siswa OR $cek_p_guru OR $cek_p_sekolah OR $cek_a)
             {
-                return redirect()->route('backend/tahun')->with(['success' => 'Data Berhasil Dihapus!']);
+                return redirect()->route('backend/tahun')->with(['error' => 'Data gagal dihapus, karena sudah berelasi!']);
             }else
             {
-                return redirect()->route('backend/tahun')->with(['errors' => 'Data Gagal Dihapus!']);
+                $q = $this->tahun_model->hapus_tahun($id);
+                if($q)
+                {
+                    return redirect()->route('backend/tahun')->with(['success' => 'Data Berhasil Dihapus!']);
+                }else
+                {
+                    return redirect()->route('backend/tahun')->with(['error' => 'Data Gagal Dihapus!']);
+                }
             }
         }else
         {

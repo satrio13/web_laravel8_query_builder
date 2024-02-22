@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\ProfilModel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class ProfilController extends Controller
 {
@@ -100,22 +101,9 @@ class ProfilController extends Controller
         $nama_gambar = '';
         if($gambar != '')
         {
-            if($get->logo_web == '' OR $get->logo_web == null)
-            {
-                $nama_gambar = time().'_'.$gambar->hashName();
-                $gambar->move(public_path('img/logo'), $nama_gambar);
-            }elseif($get->logo_web != '' AND $get->logo_web != null)
-            {
-                $nama_gambar = time().'_'.$gambar->hashName();
-                $gambar->move(public_path('img/logo'), $nama_gambar);
-                if(file_exists("img/logo/$get->logo_web"))
-                {
-                    unlink("img/logo/$get->logo_web");
-                }
-            }else
-            {
-                $nama_gambar = '';
-            }
+            $nama_gambar = time().'_'.$gambar->hashName();
+            $gambar->move(public_path('img/logo'), $nama_gambar);
+            File::delete("img/logo/$get->logo_web");
         }else
         {
             return redirect()->back()->withInput()->with(['error' => 'Anda belum memilih file yang akan diupload!']);
@@ -153,22 +141,9 @@ class ProfilController extends Controller
         $nama_gambar = '';
         if($gambar != '')
         {
-            if($get->favicon == '' OR $get->favicon == null)
-            {
-                $nama_gambar = time().'_'.$gambar->hashName();
-                $gambar->move(public_path('img/logo'), $nama_gambar);
-            }elseif($get->favicon != '' AND $get->favicon != null)
-            {
-                $nama_gambar = time().'_'.$gambar->hashName();
-                $gambar->move(public_path('img/logo'), $nama_gambar);
-                if(file_exists("img/logo/$get->favicon"))
-                {
-                    unlink("img/logo/$get->favicon");
-                }
-            }else
-            {
-                $nama_gambar = '';
-            }
+            $nama_gambar = time().'_'.$gambar->hashName();
+            $gambar->move(public_path('img/logo'), $nama_gambar);
+            File::delete("img/logo/$get->favicon");
         }else
         {
             return redirect()->back()->withInput()->with(['error' => 'Anda belum memilih file yang akan diupload!']);
@@ -206,22 +181,9 @@ class ProfilController extends Controller
         $nama_gambar = '';
         if($gambar != '')
         {
-            if($get->logo_admin == '' OR $get->logo_admin == null)
-            {
-                $nama_gambar = time().'_'.$gambar->hashName();
-                $gambar->move(public_path('img/logo'), $nama_gambar);
-            }elseif($get->logo_admin != '' AND $get->logo_admin != null)
-            {
-                $nama_gambar = time().'_'.$gambar->hashName();
-                $gambar->move(public_path('img/logo'), $nama_gambar);
-                if(file_exists("img/logo/$get->logo_admin"))
-                {
-                    unlink("img/logo/$get->logo_admin");
-                }
-            }else
-            {
-                $nama_gambar = '';
-            }
+            $nama_gambar = time().'_'.$gambar->hashName();
+            $gambar->move(public_path('img/logo'), $nama_gambar);
+            File::delete("img/logo/$get->logo_admin");
         }else
         {
             return redirect()->back()->withInput()->with(['error' => 'Anda belum memilih file yang akan diupload!']);
@@ -259,22 +221,9 @@ class ProfilController extends Controller
         $nama_gambar = '';
         if($gambar != '')
         {
-            if($get->gambar == '' OR $get->gambar == null)
-            {
-                $nama_gambar = time().'_'.$gambar->hashName();
-                $gambar->move(public_path('img/logo'), $nama_gambar);
-            }elseif($get->gambar != '' AND $get->gambar != null)
-            {
-                $nama_gambar = time().'_'.$gambar->hashName();
-                $gambar->move(public_path('img/logo'), $nama_gambar);
-                if(file_exists("img/logo/$get->gambar"))
-                {
-                    unlink("img/logo/$get->gambar");
-                }
-            }else
-            {
-                $nama_gambar = '';
-            }
+            $nama_gambar = time().'_'.$gambar->hashName();
+            $gambar->move(public_path('img/profil'), $nama_gambar);
+            File::delete("img/profil/$get->gambar");
         }else
         {
             return redirect()->back()->withInput()->with(['error' => 'Anda belum memilih file yang akan diupload!']);
@@ -312,22 +261,9 @@ class ProfilController extends Controller
         $nama_file = '';
         if($file != '')
         {
-            if($get->file == '' OR $get->file == null)
-            {
-                $nama_file = time().'_'.$file->hashName();
-                $file->move(public_path('file'), $nama_file);
-            }elseif($get->file != '' AND $get->file != null)
-            {
-                $nama_file = time().'_'.$file->hashName();
-                $file->move(public_path('file'), $nama_file);
-                if(file_exists("file/$get->file"))
-                {
-                    unlink("file/$get->file");
-                }
-            }else
-            {
-                $nama_file = '';
-            }
+            $nama_file = time().'_'.$file->hashName();
+            $file->move(public_path('file'), $nama_file);
+            File::delete("img/file/$get->file");
         }else
         {
             return redirect()->back()->withInput()->with(['error' => 'Anda belum memilih file yang akan diupload!']);

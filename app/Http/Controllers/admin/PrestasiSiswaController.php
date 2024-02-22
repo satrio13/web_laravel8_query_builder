@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\PrestasiSiswaModel;
 use App\Models\Admin\TahunModel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class PrestasiSiswaController extends Controller
 {
@@ -76,7 +77,7 @@ class PrestasiSiswaController extends Controller
         }
     }
 
-    public function edit_prestasi_siswa($id)
+    function edit_prestasi_siswa($id)
     {   
         $cek = $this->prestasi_siswa_model->cek_prestasi_siswa($id);
         if($cek)
@@ -110,19 +111,9 @@ class PrestasiSiswaController extends Controller
         $gambar = $request->file('gambar');
         if($gambar != '')
         {
-            if($get->gambar == '' OR $get->gambar == null)
-            {        
-                $nama_gambar = time().'_'.$gambar->hashName();
-                $gambar->move(public_path('img/prestasi_siswa'), $nama_gambar);
-            }elseif($get->gambar != '' AND $get->gambar != null)
-            {
-                $nama_gambar = time().'_'.$gambar->hashName();
-                $gambar->move(public_path('img/prestasi_siswa'), $nama_gambar);
-                unlink("img/prestasi_siswa/$get->gambar");
-            }else
-            {
-                $nama_gambar = '';
-            }
+            $nama_gambar = time().'_'.$gambar->hashName();
+            $gambar->move(public_path('img/prestasi_siswa'), $nama_gambar);
+            File::delete("img/prestasi_siswa/$get->gambar");
         }else
         {
             $nama_gambar = $get->gambar;
@@ -151,23 +142,19 @@ class PrestasiSiswaController extends Controller
         }
     }
 
-    public function hapus_prestasi_siswa($id)
+    function hapus_prestasi_siswa($id)
     {   
         $cek = $this->prestasi_siswa_model->cek_prestasi_siswa($id);
         if($cek)
         {
-            if($cek->gambar != '' AND file_exists("img/prestasi_siswa/$cek->gambar"))
-            {
-                unlink("img/prestasi_siswa/$cek->gambar");
-            }
-
+            File::delete("img/prestasi_siswa/$cek->gambar");
             $q = $this->prestasi_siswa_model->hapus_prestasi_siswa($id);
             if($q)
             {
                 return redirect()->route('backend/prestasi-siswa')->with(['success' => 'Data Berhasil Dihapus!']);
             }else
             {
-                return redirect()->route('backend/prestasi-siswa')->with(['errors' => 'Data Gagal Dihapus!']);
+                return redirect()->route('backend/prestasi-siswa')->with(['error' => 'Data Gagal Dihapus!']);
             }
         }else
         {

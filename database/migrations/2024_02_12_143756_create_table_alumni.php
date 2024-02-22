@@ -16,10 +16,12 @@ class CreateTableAlumni extends Migration
     {
         Schema::create('tb_alumni', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_tahun');
+            $table->unsignedInteger('id_tahun');
             $table->integer('jml_l');
             $table->integer('jml_p');
             $table->timestamps();
+
+            $table->foreign('id_tahun')->references('id_tahun')->on('tb_tahun')->onDelete('no action');
         });
     }
 

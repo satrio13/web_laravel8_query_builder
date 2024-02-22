@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\AlbumModel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AlbumController extends Controller
 {
@@ -37,7 +38,7 @@ class AlbumController extends Controller
         $data = [
             'album' => $request->input('album'),
             'is_active' => $request->input('is_active'),
-            'slug' => slug($request->input('album')),
+            'slug' => Str::slug($request->input('album'), '-'),
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ];
@@ -76,7 +77,7 @@ class AlbumController extends Controller
         $data = [
             'album' => $request->input('album'),
             'is_active' => $request->input('is_active'),
-            'slug' => slug($request->input('album')),
+            'slug' => Str::slug($request->input('album'), '-'),
             'updated_at' => date('Y-m-d H:i:s')
         ];
 
@@ -92,13 +93,20 @@ class AlbumController extends Controller
 
     function hapus_album($id)
     {
-        $q = $this->album_model->hapus_album($id);
-        if($q)
+        $cek_foto = $this->album_model->cek_album_foto($id);
+        if($cek_foto)
         {
-            return redirect()->route('backend/album')->with(['success' => 'Data Berhasil Dihapus!']);
+            return redirect()->route('backend/album')->with(['error' => 'Data gagal dihapus, karena sudah berelasi!']);
         }else
         {
-            return redirect()->route('backend/album')->with(['success' => 'Data Gagal Dihapus!']);
+            $q = $this->album_model->hapus_album($id);
+            if($q)
+            {
+                return redirect()->route('backend/album')->with(['success' => 'Data Berhasil Dihapus!']);
+            }else
+            {
+                return redirect()->route('backend/album')->with(['error' => 'Data Gagal Dihapus!']);
+            }
         }
     }
 

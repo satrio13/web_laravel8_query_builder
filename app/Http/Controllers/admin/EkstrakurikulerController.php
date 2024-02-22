@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\EkstrakurikulerModel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 
 class EkstrakurikulerController extends Controller
 {
@@ -46,7 +48,7 @@ class EkstrakurikulerController extends Controller
             'nama_ekstrakurikuler' => $request->input('nama_ekstrakurikuler'),
             'gambar' => $nama_gambar,
             'keterangan' => $request->input('keterangan'),
-            'slug' => slug($request->input('nama_ekstrakurikuler')),
+            'slug' => Str::slug($request->input('nama_ekstrakurikuler'), '-'),
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ];
@@ -80,19 +82,9 @@ class EkstrakurikulerController extends Controller
         $gambar = $request->file('gambar');
         if($gambar != '')
         {
-            if($get->gambar == '' OR $get->gambar == null)
-            {        
-                $nama_gambar = time().'_'.$gambar->hashName();
-                $gambar->move(public_path('img/ekstrakurikuler'), $nama_gambar);
-            }elseif($get->gambar != '' AND $get->gambar != null)
-            {
-                $nama_gambar = time().'_'.$gambar->hashName();
-                $gambar->move(public_path('img/ekstrakurikuler'), $nama_gambar);
-                unlink("img/ekstrakurikuler/$get->gambar");
-            }else
-            {
-                $nama_gambar = '';
-            }
+            $nama_gambar = time().'_'.$gambar->hashName();
+            $gambar->move(public_path('img/ekstrakurikuler'), $nama_gambar);
+            File::delete("img/ekstrakurikuler/$get->gambar");
         }else
         {
             $nama_gambar = $get->gambar;
@@ -102,7 +94,7 @@ class EkstrakurikulerController extends Controller
             'nama_ekstrakurikuler' => $request->input('nama_ekstrakurikuler'),
             'gambar' => $nama_gambar,
             'keterangan' => $request->input('keterangan'),
-            'slug' => slug($request->input('nama_ekstrakurikuler')),
+            'slug' => Str::slug($request->input('nama_ekstrakurikuler'), '-'),
             'updated_at' => date('Y-m-d H:i:s')
         ];
 
@@ -121,18 +113,14 @@ class EkstrakurikulerController extends Controller
         $cek = $this->ekstrakurikuler_model->cek_ekstrakurikuler($id);
         if($cek)
         {   
-            if($cek->gambar != '' AND file_exists("img/ekstrakurikuler/$cek->gambar"))
-            {
-                unlink("img/ekstrakurikuler/$cek->gambar");
-            }
-
+            File::delete("img/ekstrakurikuler/$cek->gambar");
             $q = $this->ekstrakurikuler_model->hapus_ekstrakurikuler($id);
             if($q)
             {
                 return redirect()->route('backend/ekstrakurikuler')->with(['success' => 'Data Berhasil Dihapus!']);
             }else
             {
-                return redirect()->route('backend/ekstrakurikuler')->with(['errors' => 'Data Gagal Dihapus!']);
+                return redirect()->route('backend/ekstrakurikuler')->with(['error' => 'Data Gagal Dihapus!']);
             }
         }else
         {

@@ -48,4 +48,19 @@ class UserModel
         return DB::table($this->table)->where('email', $email)->where('id_user', '!=', $id)->count();
     }
 
+    function cek_user_pengumuman($id)
+    {
+        return DB::table('tb_pengumuman')->select('id_user')->where('id_user', $id)->first();
+    }
+
+    function cek_user_berita($id)
+    {
+        return DB::table('tb_berita')->select('id_user')->where('id_user', $id)->first();
+    }
+
+    function cek_user_download($id)
+    {
+        return DB::table('tb_download')->select('id_user')->where('id_user', $id)->first();
+    }
+
 }

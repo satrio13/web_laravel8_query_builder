@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\GuruModel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class GuruController extends Controller
 {
@@ -120,19 +121,9 @@ class GuruController extends Controller
         $gambar = $request->file('gambar');
         if($gambar != '')
         {
-            if($get->gambar == '' OR $get->gambar == null)
-            {        
-                $nama_gambar = time().'_'.$gambar->hashName();
-                $gambar->move(public_path('img/guru'), $nama_gambar);
-            }elseif($get->gambar != '' AND $get->gambar != null)
-            {
-                $nama_gambar = time().'_'.$gambar->hashName();
-                $gambar->move(public_path('img/guru'), $nama_gambar);
-                unlink("img/guru/$get->gambar");
-            }else
-            {
-                $nama_gambar = '';
-            }
+            $nama_gambar = time().'_'.$gambar->hashName();
+            $gambar->move(public_path('img/guru'), $nama_gambar);
+            File::delete("img/guru/$get->gambar");
         }else
         {
             $nama_gambar = $get->gambar;
@@ -180,18 +171,14 @@ class GuruController extends Controller
         $cek = $this->guru_model->cek_guru($id);
         if($cek)
         {   
-            if($cek->gambar != '' AND file_exists("img/pengumuman/$cek->gambar"))
-            {
-                unlink("img/guru/$cek->gambar");
-            }
-
+            File::delete("img/guru/$cek->gambar");
             $q = $this->guru_model->hapus_guru($id);
             if($q)
             {
                 return redirect()->route('backend/guru')->with(['success' => 'Data Berhasil Dihapus!']);
             }else
             {
-                return redirect()->route('backend/guru')->with(['errors' => 'Data Gagal Dihapus!']);
+                return redirect()->route('backend/guru')->with(['error' => 'Data Gagal Dihapus!']);
             }
         }else
         {

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\AgendaModel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 
 class AgendaController extends Controller
 {
@@ -73,7 +75,7 @@ class AgendaController extends Controller
             'keterangan' => $request->input('keterangan'),
             'tempat' => $request->input('tempat'),
             'gambar' => $nama_gambar,
-            'slug' => slug($request->input('nama_agenda')),
+            'slug' => Str::slug($request->input('nama_agenda'), '-'),
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ];
@@ -134,19 +136,9 @@ class AgendaController extends Controller
         $gambar = $request->file('gambar');
         if($gambar != '')
         {
-            if($get->gambar == '' OR $get->gambar == null)
-            {        
-                $nama_gambar = time().'_'.$gambar->hashName();
-                $gambar->move(public_path('img/agenda'), $nama_gambar);
-            }elseif($get->gambar != '' AND $get->gambar != null)
-            {
-                $nama_gambar = time().'_'.$gambar->hashName();
-                $gambar->move(public_path('img/agenda'), $nama_gambar);
-                unlink("img/agenda/$get->gambar");
-            }else
-            {
-                $nama_gambar = '';
-            }
+            $nama_gambar = time().'_'.$gambar->hashName();
+            $gambar->move(public_path('img/agenda'), $nama_gambar);
+            File::delete("img/agenda/$get->gambar");
         }else
         {
             $nama_gambar = $get->gambar;
@@ -163,7 +155,7 @@ class AgendaController extends Controller
             'keterangan' => $request->input('keterangan'),
             'tempat' => $request->input('tempat'),
             'gambar' => $nama_gambar,
-            'slug' => slug($request->input('nama_agenda')),
+            'slug' => Str::slug($request->input('nama_agenda'), '-'),
             'updated_at' => date('Y-m-d H:i:s')
         ];
 
@@ -182,18 +174,14 @@ class AgendaController extends Controller
         $cek = $this->agenda_model->cek_agenda($id);
         if($cek)
         {   
-            if($cek->gambar != '' AND file_exists("img/agenda/$cek->gambar"))
-            {
-                unlink("img/agenda/$cek->gambar");
-            }
-
+            File::delete("img/agenda/$cek->gambar");
             $q = $this->agenda_model->hapus_agenda($id);
             if($q)
             {
                 return redirect()->route('backend/agenda')->with(['success' => 'Data Berhasil Dihapus!']);
             }else
             {
-                return redirect()->route('backend/agenda')->with(['errors' => 'Data Gagal Dihapus!']);
+                return redirect()->route('backend/agenda')->with(['error' => 'Data Gagal Dihapus!']);
             }
         }else
         {

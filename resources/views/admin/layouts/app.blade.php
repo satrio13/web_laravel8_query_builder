@@ -27,7 +27,7 @@
             <ul class="navbar-nav ml-auto" style="border-left: 1px solid #ccc">
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
-                        <span class="hidden-xs"><b> </b></span>
+                        <span class="hidden-xs"><b><?= nama_user(session('id_user')); ?></b></span>
                         <i class="right fas fa-angle-down"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
@@ -45,8 +45,8 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href=" " class="brand-link">
-                <span class="brand-text font-weight-light d-flex justify-content-center"> </span>
+            <a href="javascript:void(0)" class="brand-link">
+                <span class="brand-text font-weight-light d-flex justify-content-center">{{ title() }}</span>
             </a>
 
             <!-- Sidebar -->
@@ -321,20 +321,18 @@
         @yield('content')
         <footer class="main-footer">
             <strong> 
-            @php
-                $tahun_dibuat = '2021';
-                $tahun_sekarang = date('Y');
-                if($tahun_dibuat < $tahun_sekarang)
-                {
-                    echo'&copy '.$tahun_dibuat.' - '.$tahun_sekarang.' ';  
-                }else
-                {
-                    echo'&copy '.$tahun_sekarang.' ';
-                }
-            
-                echo title();
-            @endphp
-            <a href="javascript:void(0)"> </a>
+                @php
+                    $tahun_dibuat = '2021';
+                    $tahun_sekarang = date('Y');
+                    if($tahun_dibuat < $tahun_sekarang)
+                    {
+                        echo'&copy '.$tahun_dibuat.' - '.$tahun_sekarang.' ';  
+                    }else
+                    {
+                        echo'&copy '.$tahun_sekarang.' ';
+                    }
+                @endphp
+                <a href="javascript:void(0)">{{ title() }}</a>
             </strong>
         </footer>
         <aside class="control-sidebar control-sidebar-dark"></aside>

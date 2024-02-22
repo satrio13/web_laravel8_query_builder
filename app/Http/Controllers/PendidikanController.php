@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\PendidikanModel;
 use App\Models\Admin\TahunModel;
+use Illuminate\Http\Request;
 
 class PendidikanController extends Controller
 {
