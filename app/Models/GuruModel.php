@@ -10,7 +10,7 @@ class GuruModel
 
     function list_guru()
     {
-        return DB::table($this->table)->orderBy('id','desc')->get();
+        return DB::table($this->table)->orderBy('nama','asc')->get();
     }
 
     function cek_guru($id)
