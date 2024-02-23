@@ -10,7 +10,7 @@ class KaryawanModel
 
     function list_karyawan()
     {
-        return DB::table($this->table)->orderBy('id','desc')->get();
+        return DB::table($this->table)->orderBy('nama','asc')->get();
     }
 
     function cek_karyawan($id)
