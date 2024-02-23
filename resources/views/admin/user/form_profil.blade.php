@@ -23,7 +23,9 @@
         <section class="content">
             <div class="row">
                 <div class="col-12">
-                    @if(session('error'))
+                    @if(session('success'))
+                        {!! pesan_sukses(session('success')) !!}
+                    @elseif(session('error'))
                         {!! pesan_gagal(session('error')) !!}
                     @endif
                     <div class="card card-primary">
