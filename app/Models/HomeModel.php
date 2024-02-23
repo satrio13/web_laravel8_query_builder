@@ -13,7 +13,7 @@ class HomeModel
 
     function link_terkait()
     {
-        return DB::table('tb_link')->select('*')->where('is_active', 1)->orderBy('id','desc')->get();
+        return DB::table('tb_link')->where('is_active', 1)->orderBy('id','desc')->get();
     }
 
 }
