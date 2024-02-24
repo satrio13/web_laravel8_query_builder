@@ -240,6 +240,18 @@
                 },
                 success: function(data)
                 {
+                    var nip = (data.nip !== null) ? data.nip : '';
+                    var duk = (data.duk !== null) ? data.duk : '';
+                    var niplama = (data.niplama !== null) ? data.niplama : '';
+                    var nuptk = (data.nuptk !== null) ? data.nuptk : '';
+                    var nokarpeg = (data.nokarpeg !== null) ? data.nokarpeg : '';
+                    var golruang = (data.golruang !== null) ? data.golruang : '';
+                    var alamat = (data.alamat !== null) ? data.alamat : '';
+                    var tingkat_pt = (data.tingkat_pt !== null) ? data.tingkat_pt : '';
+                    var prodi = (data.prodi !== null) ? data.prodi : '';
+                    var th_lulus = (data.th_lulus !== null) ? data.th_lulus : '';
+                    var email = (data.email !== null) ? data.email : '';
+
                     var fileUrl = base_url +'/img/karyawan/'+ data.gambar;
                     check_file_exists(fileUrl, function(exists)
                     {
@@ -317,25 +329,25 @@
 
                     $("#load").html('');
                     $("#nama").html(': ' + data.nama);
-                    $("#nip").html(': ' + data.nip);
-                    $("#duk").html(': ' + data.duk);
-                    $("#niplama").html(': ' + data.niplama);
-                    $("#nuptk").html(': ' + data.nuptk);
-                    $("#nokarpeg").html(': ' + data.nokarpeg);
+                    $("#nip").html(': ' + nip);
+                    $("#duk").html(': ' + duk);
+                    $("#niplama").html(': ' + niplama);
+                    $("#nuptk").html(': ' + nuptk);
+                    $("#nokarpeg").html(': ' + nokarpeg);
                     $("#tmp_lahir").html(': ' + data.tmp_lahir);
                     $("#tgl_lahir").html(': ' + tgl_lahir);
                     $("#statuspeg").html(': ' + data.statuspeg);
-                    $("#golruang").html(': ' + data.golruang);
+                    $("#golruang").html(': ' + golruang);
                     $("#tmt_cpns").html(': ' + tmt_cpns);
                     $("#tmt_pns").html(': ' + tmt_pns);
                     $("#jk").html(': ' + jk);
                     $("#agama").html(': ' + agama);
-                    $("#alamat").html(': ' + data.alamat);
-                    $("#tingkat_pt").html(': ' + data.tingkat_pt);
-                    $("#prodi").html(': ' + data.prodi);
-                    $("#th_lulus").html(': ' + data.th_lulus);
+                    $("#alamat").html(': ' + alamat);
+                    $("#tingkat_pt").html(': ' + tingkat_pt);
+                    $("#prodi").html(': ' + prodi);
+                    $("#th_lulus").html(': ' + th_lulus);
                     $("#status").html(': ' + data.status);
-                    $("#email").html(': ' + data.email);
+                    $("#email").html(': ' + email);
                 },
                 error: function (request)
                 {
