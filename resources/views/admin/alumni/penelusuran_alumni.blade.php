@@ -256,6 +256,15 @@
                 },
                 success: function(data)
                 {
+                    var sma = (data.sma !== null) ? data.sma : '';
+                    var pt = (data.pt !== null) ? data.pt : '';
+                    var instansi = (data.instansi !== null) ? data.instansi : '';
+                    var alamatins = (data.alamatins !== null) ? data.alamatins : '';
+                    var hp = (data.hp !== null) ? data.hp : '';
+                    var email = (data.email !== null) ? data.email : '';
+                    var alamat = (data.alamat !== null) ? data.alamat : '';
+                    var kesan = (data.kesan !== null) ? data.kesan : '';
+
                     var fileUrl = base_url +'/img/alumni/'+ data.gambar;
                     check_file_exists(fileUrl, function(exists)
                     {
@@ -271,14 +280,14 @@
                     $("#load").html('');
                     $("#nama").html(': ' + data.nama);
                     $("#th_lulus").html(': ' + data.th_lulus);
-                    $("#sma").html(': ' + data.sma);
-                    $("#pt").html(': ' + data.pt);
-                    $("#instansi").html(': ' + data.instansi);
-                    $("#alamatins").html(': ' + data.alamatins);
-                    $("#hp").html(': ' + data.hp);
-                    $("#email").html(': ' + data.email);
-                    $("#alamat").html(': ' + data.alamat);
-                    $("#kesan").html(': ' + data.kesan);
+                    $("#sma").html(': ' + sma);
+                    $("#pt").html(': ' + pt);
+                    $("#instansi").html(': ' + instansi);
+                    $("#alamatins").html(': ' + alamatins);
+                    $("#hp").html(': ' + hp);
+                    $("#email").html(': ' + email);
+                    $("#alamat").html(': ' + alamat);
+                    $("#kesan").html(': ' + kesan);
                 },
                 error: function (request)
                 {
