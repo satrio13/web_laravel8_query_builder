@@ -53,7 +53,7 @@
                         </thead>
                         <tbody>
                         @if($data->count() > 0)
-                            @foreach($data as $no => $r):
+                            @foreach($data as $no => $r)
                                 <tr>
                                     <td class="text-center">{{ $no + 1 }}</td>
                                     <td>{{ $r->tahun }}</td>
