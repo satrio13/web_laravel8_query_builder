@@ -20,7 +20,7 @@ class PengumumanModel
 
     function cek_pengumuman($slug)
     {
-        return DB::table($this->table)->select('slug')->where('slug', $slug)->first();
+        return DB::table($this->table)->select('slug','dibaca')->where('slug', $slug)->first();
     }
 
     function get_pengumuman($slug)
@@ -28,4 +28,9 @@ class PengumumanModel
         return DB::table($this->table)->where('slug', $slug)->first();
     }
 
+    function update_dibaca($data, $slug)
+    {
+        return DB::table($this->table)->where('slug', $slug)->update($data);
+    }
+    
 }
