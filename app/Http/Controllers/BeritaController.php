@@ -41,6 +41,10 @@ class BeritaController extends Controller
             $get = $this->berita_model->get_berita($slug);
             $data['titleweb'] = $get->nama.' - '.title();
             $data['title'] = $get->nama;
+            
+            $upd = ['dibaca' => $cek->dibaca + 1];
+            $this->berita_model->update_dibaca($upd, $slug);
+
             $data['data'] = $get;
             $data['berita_populer'] = $this->home_model->berita_populer($slug);
             $data['link_terkait'] = $this->home_model->link_terkait();
