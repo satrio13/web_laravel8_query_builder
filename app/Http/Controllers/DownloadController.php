@@ -26,10 +26,7 @@ class DownloadController extends Controller
         $cek = $this->download_model->cek_download($file);
         if($cek)
         {
-            $upd = [
-                'hits' => $cek->hits + 1
-            ];
-
+            $upd = ['hits' => $cek->hits + 1];
             $this->download_model->update_dibaca($upd, $file);
             $path = "file/$cek->file";
             if(!file_exists($path))
@@ -37,7 +34,17 @@ class DownloadController extends Controller
                 return abort(404, 'File not found');
             }else
             {
-                return response()->download($path);
+                // Membuat response download
+                $response = response()->download($path);
+                
+                // Mengatur header untuk mematikan caching
+                $response->headers->add([
+                    'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
+                    'Pragma' => 'no-cache',
+                    'Expires' => 'Fri, 01 Jan 1990 00:00:00 GMT', // Tanggal kedaluwarsa
+                ]);
+
+                return $response;
             }
         }else
         {
