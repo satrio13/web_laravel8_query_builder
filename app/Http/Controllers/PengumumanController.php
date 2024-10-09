@@ -41,6 +41,10 @@ class PengumumanController extends Controller
             $get = $this->pengumuman_model->get_pengumuman($slug);
             $data['titleweb'] = $get->nama.' - '.title();
             $data['title'] = $get->nama;
+
+            $upd = ['dibaca' => $cek->dibaca + 1];
+            $this->pengumuman_model->update_dibaca($upd, $slug);
+
             $data['data'] = $get;
             $data['berita_populer'] = $this->home_model->berita_populer($slug);
             $data['link_terkait'] = $this->home_model->link_terkait();
