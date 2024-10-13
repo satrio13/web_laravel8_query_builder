@@ -40,9 +40,9 @@
             <br>
             @if(isset($submit))
                 @if(jenjang() == 1 OR jenjang() == 2)
-                    <h4 class="text-center">REKAP UJIAN SEKOLAH TAHUN PELAJARAN</h3>
+                    <h5 class="text-center">REKAP UJIAN SEKOLAH TAHUN PELAJARAN</h5>
                 @elseif(jenjang() == 3 OR jenjang() == 4)
-                    <h4 class="text-center">REKAP UJIAN MADRASAH TAHUN PELAJARAN {{ tahun($id_tahun) }}</h3>
+                    <h5 class="text-center">REKAP UJIAN MADRASAH TAHUN PELAJARAN {{ tahun($id_tahun) }}</h5>
                 @endif  
                 <div class="table table-responsive">
                     <table class="table table-bordered table-striped table-sm">
