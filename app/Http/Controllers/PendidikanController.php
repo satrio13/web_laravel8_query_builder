@@ -47,6 +47,7 @@ class PendidikanController extends Controller
         $data['title'] = "Rekap Ujian $jenis";
         $data['tahun'] = $this->tahun_model->list_tahun();
         $data['submit'] = $request->input('submit');
+        $data['id_tahun'] = $request->input('id_tahun');
         $data['data'] = $this->pendidikan_model->cari_rekap_us($request->input('id_tahun'));
         return view('pendidikan/rekap_us', $data);
     }
