@@ -63,7 +63,7 @@
                                         </div>
                                         <br><label for="is_active" class="error"></label>
                                         <small class="text-danger">
-                                            {{ ($errors->first('is_active')) ? $errors->first('link') : '' }} 
+                                            {{ ($errors->first('is_active')) ? $errors->first('is_active') : '' }} 
                                         </small>
                                     </div>
                                 </div>
@@ -74,7 +74,7 @@
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <button type="submit" name="submit" value="Submit" class="btn btn-primary btn-sm"><i class="fa fa-check"></i> SIMPAN</button>
+                                <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-check"></i> SIMPAN</button>
                                 <a href="{{ route('backend/link') }}" class="btn btn-danger btn-sm float-right"><i class="fa fa-arrow-left"></i> BATAL</a>
                             </div>
                         </form>
