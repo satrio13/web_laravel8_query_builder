@@ -31,7 +31,12 @@ class BannerController extends Controller
     function simpan_banner(Request $request)
     {   
         $request->validate([
-            'is_active' => 'required',
+            'gambar' => 'required|image|mimes:jpeg,jpg,png|max:1024',
+            'judul' => 'max:100',
+            'keterangan' => 'max:200',
+            'button' => 'max:30',
+            'link' => 'nullable|url|max:300',
+            'is_active' => 'required'
         ]);
             
         $nama_gambar = '';
@@ -80,7 +85,12 @@ class BannerController extends Controller
     function update_banner(Request $request, $id)
     {   
         $request->validate([
-            'is_active' => 'required',
+            'gambar' => 'image|mimes:jpeg,jpg,png|max:1024',
+            'judul' => 'max:100',
+            'keterangan' => 'max:200',
+            'button' => 'max:30',
+            'link' => 'nullable|url|max:300',
+            'is_active' => 'required'
         ]);
             
         $get = $this->banner_model->cek_banner($id);
