@@ -16,7 +16,7 @@ class SarprasController extends Controller
 
     function index()
     {     
-        $data['title'] = 'Sarana & Prasarara';
+        $data['title'] = 'Sarana & Prasarana';
         $data['data'] = $this->sarpras_model->get_sarpras();
         return view('admin.sarpras.index', $data);
     }
