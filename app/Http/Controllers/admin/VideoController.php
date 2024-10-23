@@ -33,6 +33,10 @@ class VideoController extends Controller
             'judul' => 'required|max:100',
             'keterangan' => 'max:200',
             'link' => 'required|max:100'
+        ],
+        [
+            'link.required' => 'Kolom kode video youtube harus diisi.',
+            'link.max:100' => 'Kolom kode video youtube harus kurang dari atau sama dengan :value karakter.'
         ]);
 
         $data = [
@@ -73,6 +77,10 @@ class VideoController extends Controller
             'judul' => 'required|max:100',
             'keterangan' => 'max:200',
             'link' => 'required|max:100'
+        ],
+        [
+            'link.required' => 'Kolom kode video youtube harus diisi.',
+            'link.max:100' => 'Kolom kode video youtube harus kurang dari atau sama dengan :value karakter.'
         ]);
 
         $data = [
