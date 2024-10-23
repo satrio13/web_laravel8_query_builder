@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Pagination\Paginator;
-use App\Models\Admin\UserModel;
+use App\Models\UserModel;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -44,11 +44,11 @@ class AppServiceProvider extends ServiceProvider
 
         // Set custom messages for validation
         Validator::replacer('cek_username', function ($message, $attribute, $rule, $parameters) {
-            return str_replace(':attribute', $attribute, 'The ' . $attribute . ' has already been taken.');
+            return str_replace(':attribute', $attribute, 'Kolom ' . $attribute . ' sudah ada yang menggunakan.');
         });
 
         Validator::replacer('cek_email', function ($message, $attribute, $rule, $parameters) {
-            return str_replace(':attribute', $attribute, 'The ' . $attribute . ' has already been taken.');
+            return str_replace(':attribute', $attribute, 'Kolom ' . $attribute . ' sudah ada yang menggunakan.');
         });
 
         Paginator::useBootstrap();
