@@ -43,7 +43,7 @@
                                             <th>ALAMAT</th>
                                             <th>KESAN</th>
                                             <th>GAMBAR</th>
-                                            <th>TGL POST</th>
+                                            <th>TGL POSTING</th>
                                             <th width="10%">AKSI</th>
                                         </tr>
                                     </thead>
@@ -88,7 +88,7 @@
                                             <td>{{ $r->alamat }}</td>
                                             <td>{!! $kesan !!}</td>
                                             <td class="text-center">{!! $img !!}</td>
-                                            <td>{{ date('d-m-Y', strtotime($r->created_at)) }}</td>
+                                            <td>{{ date('d-m-Y H:i:s', strtotime($r->created_at)) }}</td>
                                             <td class="text-center" nowrap>
                                                 <a href="javascript:void(0)" onclick="detail('{{ $r->id }}')" class="btn btn-primary btn-xs" title="LIHAT DETAIL">DETAIL</a>
                                                 <a href="javascript:void(0)" onclick="status('{{ $r->id }}')" class="btn btn-info btn-xs">EDIT STATUS</a>
@@ -184,6 +184,10 @@
                     <div class="row mt-2">
                         <div class="col-md-2 text-bold">KESAN</div>
                         <div class="col-md-10" id="kesan"></div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-2 text-bold">TGL POSTING</div>
+                        <div class="col-md-10" id="tgl"></div>
                     </div>
                 </div>
             </div>
@@ -292,6 +296,8 @@
                         var email = (data.email !== null) ? data.email : '';
                         var alamat = (data.alamat !== null) ? data.alamat : '';
                         var kesan = (data.kesan !== null) ? data.kesan : '';
+                        var date = new Date(data.created_at); // Membuat objek Date
+                        var created_at = format_date(date); 
 
                         var fileUrl = base_url +'/img/alumni/'+ data.gambar;
                         check_file_exists(fileUrl, function(exists)
@@ -316,6 +322,7 @@
                         $("#email").html(': ' + email);
                         $("#alamat").html(': ' + alamat);
                         $("#kesan").html(': ' + kesan);
+                        $("#tgl").html(': ' + created_at);
                         $('#modal_form').modal('show');            
                     },
                     error: function (request)
@@ -379,51 +386,6 @@
             });
         }
 
-        function get_bulan(bln)
-        {
-            var bulan;
-            switch(bln)
-            {
-                case '01':
-                    bulan = 'Januari';
-                    break;
-                case '02':
-                    bulan = 'Februari';
-                    break;
-                case '03':
-                    bulan = 'Maret';
-                    break;
-                case '04':
-                    bulan = 'April';
-                    break;
-                case '05':
-                    bulan = 'Mei';
-                    break;
-                case '06':
-                    bulan = 'Juni';
-                    break;
-                case '07':
-                    bulan = 'Juli';
-                    break;
-                case '08':
-                    bulan = 'Agustus';
-                    break;
-                case '09':
-                    bulan = 'September';
-                    break;
-                case '10':
-                    bulan = 'Oktober';
-                    break;
-                case '11':
-                    bulan = 'November';
-                    break;
-                case '12':
-                    bulan = 'Desember';
-                    break;
-            } 
-            return bulan;
-        }
-
         function check_file_exists(url, callback)
         {
             var xhr = new XMLHttpRequest();
@@ -442,6 +404,30 @@
                 }
             };
             xhr.send();
+        }
+
+        function format_date(date)
+        {
+            var day = date.getDate().toString().padStart(2, '0'); 
+            var month = (date.getMonth() + 1).toString().padStart(2, '0'); 
+            var year = date.getFullYear();
+            var hours = date.getHours().toString().padStart(2, '0'); 
+            var minutes = date.getMinutes().toString().padStart(2, '0'); 
+            var seconds = date.getSeconds().toString().padStart(2, '0'); 
+
+            return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+        }
+
+        function alert_gagal(str)
+        {
+            setTimeout(function () { 
+                swal({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: str,
+                    timer: 8000
+                });
+            },2000); 
         }
     </script>
 @endsection
