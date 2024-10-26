@@ -192,7 +192,7 @@ class GuruController extends Controller
         if($cek)
         {   
             $data = $this->guru_model->get_guru($id);
-            echo json_encode($data);
+            return response()->json($data);  
         }else
         {
             abort(404);
