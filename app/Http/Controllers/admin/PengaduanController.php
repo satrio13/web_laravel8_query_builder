@@ -27,7 +27,7 @@ class PengaduanController extends Controller
         if($cek)
         {
             $data = $this->pengaduan_model->get_pengaduan($id);
-            echo json_encode($data);
+            return response()->json($data);  
         }else
         {
             abort(404);
