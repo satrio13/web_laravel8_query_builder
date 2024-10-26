@@ -126,13 +126,13 @@ class AlumniController extends Controller
     function lihat_alumni($id)
 	{ 
         $data = $this->alumni_model->get_isialumni($id);
-        echo json_encode($data);
+        return response()->json($data);  
     }
 
     function status($id)
 	{ 
         $data = $this->alumni_model->get_isialumni($id);
-        echo json_encode($data);
+        return response()->json($data);  
     }
 
     function save_status(Request $request)
@@ -144,7 +144,7 @@ class AlumniController extends Controller
         ];
 
         $q = $this->alumni_model->update_isialumni($data, $id);
-        echo json_encode($q);	
+        return response()->json($q);  	
     }
 
     function hapus_penelusuran_alumni($id)
