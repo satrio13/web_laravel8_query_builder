@@ -190,7 +190,7 @@ class KaryawanController extends Controller
         if($cek)
         {   
             $data = $this->karyawan_model->get_karyawan($id);
-            echo json_encode($data);
+            return response()->json($data);  
         }else
         {
             abort(404);
