@@ -101,7 +101,7 @@ class ProfilController extends Controller
         $nama_gambar = '';
         if($gambar != '')
         {
-            $nama_gambar = time().'_'.$gambar->hashName();
+            $nama_gambar = time().'_'.$gambar->getClientOriginalName();
             $gambar->move(public_path('img/logo'), $nama_gambar);
             File::delete("img/logo/$get->logo_web");
         }else
@@ -221,7 +221,7 @@ class ProfilController extends Controller
         $nama_gambar = '';
         if($gambar != '')
         {
-            $nama_gambar = time().'_'.$gambar->hashName();
+            $nama_gambar = time().'_'.$gambar->getClientOriginalName();
             $gambar->move(public_path('img/profil'), $nama_gambar);
             File::delete("img/profil/$get->gambar");
         }else
@@ -261,7 +261,7 @@ class ProfilController extends Controller
         $nama_file = '';
         if($file != '')
         {
-            $nama_file = time().'_'.$file->hashName();
+            $nama_file = time().'_'.$file->getClientOriginalName();
             $file->move(public_path('file'), $nama_file);
             File::delete("img/file/$get->file");
         }else
