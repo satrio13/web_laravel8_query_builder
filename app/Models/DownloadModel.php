@@ -10,7 +10,7 @@ class DownloadModel
 
     function list_download()
     {
-        return DB::table($this->table)->where('is_active',1)->orderBy('updated_at','desc')->get();
+        return DB::table($this->table)->where('is_active',1)->orderBy('created_at','desc')->get();
     }
 
     function cek_download($file)
