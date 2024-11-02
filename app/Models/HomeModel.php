@@ -8,7 +8,7 @@ class HomeModel
 {
     function berita_populer($slug)
     {
-        return DB::table('tb_berita')->select('id','nama','gambar','dibaca','is_active','hari','updated_at','slug')->where('is_active', 1)->where('slug', '!=', $slug)->orderBy('dibaca','desc')->limit(3,0)->get();
+        return DB::table('tb_berita')->select('id','nama','gambar','dibaca','is_active','hari','created_at','slug')->where('is_active', 1)->where('slug', '!=', $slug)->orderBy('dibaca','desc')->limit(3,0)->get();
     }
 
     function link_terkait()
