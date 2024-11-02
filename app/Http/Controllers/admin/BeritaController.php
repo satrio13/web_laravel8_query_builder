@@ -120,8 +120,6 @@ class BeritaController extends Controller
             'gambar' => $nama_gambar,
             'id_user' => session('id_user'),
             'is_active' => $request->input('is_active'),
-            'hari' => hari_ini_indo(),
-            'tgl' => tgl_jam_simpan_sekarang(),
             'slug' => Str::slug($request->input('nama'), '-'),
             'updated_at' => date('Y-m-d H:i:s')
         ];
